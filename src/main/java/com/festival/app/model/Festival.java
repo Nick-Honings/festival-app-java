@@ -2,11 +2,10 @@ package com.festival.app.model;
 
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -18,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Festival {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -36,8 +35,17 @@ public class Festival {
     @Column(name = "min_age")
     private Integer minimumAge;
 
-    @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL)
-    private Set<Area> area;
+    @JsonBackReference
+    @OneToMany(mappedBy = "festival", cascade = CascadeType.PERSIST)
+    private Set<Area> areas = new HashSet<Area>();
+
+    public void addArea(Area area){
+        areas.add(area);
+        area.setFestival(this);
+    }
+
+    public Set<Area> getAreas(){return areas;}
+
 
     public Long getId() {
         return id;
