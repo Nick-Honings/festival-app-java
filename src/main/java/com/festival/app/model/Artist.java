@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Artist {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -24,9 +24,12 @@ public class Artist {
     private String genre;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "area_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "area_id")
     private Area area;
 
 
+    public void setArea(Area area) {
+        this.area = area;
+    }
 }

@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,7 +20,7 @@ import java.util.Set;
 public class Area {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -28,18 +30,26 @@ public class Area {
     private String genre;
 
 
-    @JsonIgnore
-    @JsonBackReference
-    @OneToMany( mappedBy = "area", cascade = CascadeType.ALL)
-    private Set<Artist> artists;
+    @OneToMany(mappedBy = "area", cascade = CascadeType.ALL)
+    private List<Artist> artists = new ArrayList<Artist>();
 
-    @ManyToOne
-    @JoinColumn(name = "festival_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "festival_id")
     private Festival festival;
 
-    public void setFestival(Festival festival){
-        this.festival = festival;
+
+    public void addArtist(Artist artist){
+        this.artists.add(artist);
+        artist.setArea(this);
+    }
+
+    public List<Artist> getArtists(){
+        return this.artists;
     }
 
 
+    public void setFestival(Festival festival) {
+        this.festival = festival;
+    }
 }
