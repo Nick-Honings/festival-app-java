@@ -9,8 +9,8 @@
 
 spring:
   datasource:
-    #driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/festival_app
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/festival_app?serverTimezone=Europe/Amsterdam
     username: root
     password: root
     continue-on-error: false
@@ -29,11 +29,16 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
+
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         hbm2ddl:
           #change this to update to auto update tables
           auto: update
+    show-sql: true
 #        temp:
 #          use_jdbc_metadata_defaults: false
+
+
+
 server:
   port: 9000

@@ -2,11 +2,10 @@ package com.festival.app.model;
 
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -36,63 +35,16 @@ public class Festival {
     @Column(name = "min_age")
     private Integer minimumAge;
 
+
     @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL)
-    private Set<Area> area;
+    private List<Area> areas = new ArrayList<Area>();
 
-    public Long getId() {
-        return id;
+    public void addArea(Area area){
+        this.areas.add(area);
+        area.setFestival(this);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public List<Area> getAreas(){return areas;}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Integer getMinimumAge() {
-        return minimumAge;
-    }
-
-    public void setMinimumAge(Integer minimumAge) {
-        this.minimumAge = minimumAge;
-    }
 }
 

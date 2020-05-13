@@ -1,10 +1,16 @@
 package com.festival.app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,10 +29,27 @@ public class Area {
 
     private String genre;
 
-    @OneToMany(mappedBy = "area", cascade = CascadeType.ALL)
-    private Set<Artist> artists;
 
-    @ManyToOne
-    @JoinColumn(name = "festival_id", referencedColumnName = "id", nullable = false)
+    @OneToMany(mappedBy = "area", cascade = CascadeType.ALL)
+    private List<Artist> artists = new ArrayList<Artist>();
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "festival_id")
     private Festival festival;
+
+
+    public void addArtist(Artist artist){
+        this.artists.add(artist);
+        artist.setArea(this);
+    }
+
+    public List<Artist> getArtists(){
+        return this.artists;
+    }
+
+
+    public void setFestival(Festival festival) {
+        this.festival = festival;
+    }
 }
