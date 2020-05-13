@@ -9,8 +9,8 @@
 
 spring:
   datasource:
-    #driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/festival_app
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/festival_app?serverTimezone=Europe/Amsterdam
     username: root
     password: root
     continue-on-error: false
