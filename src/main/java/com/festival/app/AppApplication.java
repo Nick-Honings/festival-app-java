@@ -23,13 +23,12 @@ public class AppApplication {
 		SpringApplication.run(AppApplication.class, args);
 	}
 
-	// Fix the CORS errors
 	@Bean
 	public FilterRegistrationBean simpleCorsFilter(){
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		// *** URL below needs to match the Vue client URL and port ***
+
 		config.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
 		config.setAllowedMethods(Collections.singletonList("*"));
 		config.setAllowedHeaders(Collections.singletonList("*"));
