@@ -29,7 +29,7 @@ public class AppApplication {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
 
-		config.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
+		config.setAllowedOrigins(Collections.singletonList("http://localhost:8082"));
 		config.setAllowedMethods(Collections.singletonList("*"));
 		config.setAllowedHeaders(Collections.singletonList("*"));
 		config.addExposedHeader("Authorization");
