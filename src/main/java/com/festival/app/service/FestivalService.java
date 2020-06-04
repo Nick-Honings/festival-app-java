@@ -29,7 +29,7 @@ public class FestivalService {
         this.artistRepo = artistRepo;
     }
 
-    public void addEvent(Festival festival)
+    public Festival addEvent(Festival festival)
     {
         System.out.println(festival.getAreas());
         
@@ -48,11 +48,15 @@ public class FestivalService {
             areaRepo.save(area);
         }
         
-        festivalRepo.save(festival);
+        return festivalRepo.save(festival);
     }
 
     public List<Festival> getAll(){
         return festivalRepo.findAll();
+    }
+
+    public List<Festival> findByUserId(Long id){
+        return festivalRepo.findByUserId(id);
     }
 
     public Festival save(Festival festival){
@@ -66,5 +70,7 @@ public class FestivalService {
     public Optional<Festival> getById(Long id){
         return festivalRepo.findById(id);
     }
+
+    public Festival getAllInfoById(Long id){ return festivalRepo.getAllInfo(id);}
 
 }

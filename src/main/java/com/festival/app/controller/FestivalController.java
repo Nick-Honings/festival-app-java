@@ -43,6 +43,12 @@ public class FestivalController {
         return "saved";
     }
 
+    @GetMapping(path = "/all/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Iterable<Festival> getAllById(@PathVariable Long id){
+        return service.findByUserId(id);
+    }
+
     @PutMapping(value = "/update")
     @ResponseStatus(HttpStatus.OK)
     public void update(@RequestBody Festival festival){
@@ -62,5 +68,12 @@ public class FestivalController {
     Optional<Festival> getById(@PathVariable Long id){
         return service.getById(id);
     }
+
+    @GetMapping(value = "/info/all/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Festival getAllInfoById(@PathVariable Long id) {
+        return service.getAllInfoById(id);
+    }
+
 
 }
