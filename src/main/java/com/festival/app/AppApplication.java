@@ -15,8 +15,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Collections;
 
-@SpringBootApplication
-@EnableJpaRepositories(basePackageClasses = FestivalRepository.class)
+@SpringBootApplication(scanBasePackages= { "com.festival.app" })
 public class AppApplication {
 
 	public static void main(String[] args) {
@@ -29,7 +28,7 @@ public class AppApplication {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
 
-		config.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
+		config.setAllowedOrigins(Collections.singletonList("*"));
 		config.setAllowedMethods(Collections.singletonList("*"));
 		config.setAllowedHeaders(Collections.singletonList("*"));
 		config.addExposedHeader("Authorization");
