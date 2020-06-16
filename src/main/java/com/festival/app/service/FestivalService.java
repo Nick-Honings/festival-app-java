@@ -50,7 +50,9 @@ public class FestivalService {
             areaRepo.save(area);
         }
         
-        return festivalRepo.save(festival);
+        Festival newFestival = festivalRepo.save(festival);
+        //System.out.println(newFestival);
+        return newFestival;
     }
 
     public List<Festival> getAll(){
