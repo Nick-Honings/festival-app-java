@@ -1,18 +1,16 @@
 package com.festival.app.service;
 
-import com.festival.app.model.Area;
-import com.festival.app.model.Artist;
-import com.festival.app.model.Festival;
+import com.festival.app.model.*;
 import com.festival.app.repository.AreaRepository;
 import com.festival.app.repository.ArtistRepository;
 import com.festival.app.repository.FestivalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class FestivalService {
@@ -20,19 +18,23 @@ public class FestivalService {
     private FestivalRepository festivalRepo;
     private AreaRepository areaRepo;
     private ArtistRepository artistRepo;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public FestivalService(FestivalRepository festivalRepo, AreaRepository areaRepo, ArtistRepository artistRepo){
+    public FestivalService(FestivalRepository festivalRepo, AreaRepository areaRepo, ArtistRepository artistRepo, UserDetailsServiceImpl userDetailsService){
 
         this.festivalRepo = festivalRepo;
         this.areaRepo = areaRepo;
         this.artistRepo = artistRepo;
+        this.userDetailsService = userDetailsService;
     }
 
     public Festival addEvent(Festival festival)
     {
-        System.out.println(festival.getAreas());
-        
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        ApplicationUser user = userDetailsService.findByUserName(username);
+        festival.setUser(user);
+
         List<Area> areas = new ArrayList<Area>(festival.getAreas());
 
         for (Area area : areas) {
@@ -73,4 +75,7 @@ public class FestivalService {
 
     public Festival getAllInfoById(Long id){ return festivalRepo.getAllInfo(id);}
 
+    public Festival setAttendance(Long id, Attendance attendance) {
+        return festivalRepo.setAttendance(id, attendance);
+    }
 }
