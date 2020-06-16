@@ -4,6 +4,7 @@ import com.festival.app.model.ApplicationUser;
 import com.festival.app.repository.ApplicationUserRepository;
 import com.festival.app.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,16 +30,26 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody ApplicationUser user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        applicationUserRepository.save(user);
+    public ResponseEntity<String> signUp(@RequestBody ApplicationUser user) {
+        try {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            applicationUserRepository.save(user);
+            return new ResponseEntity<>("User cannot be null", HttpStatus.OK);
+        }
+        catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/me")
-    public ApplicationUser getCurrentUser()
+    public ResponseEntity<ApplicationUser> getCurrentUser()
     {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        return userDetailsService.findByUserName(username);
+        ApplicationUser user = userDetailsService.findByUserName(username);
+        if(user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

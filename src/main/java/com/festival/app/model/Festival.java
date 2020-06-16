@@ -2,6 +2,8 @@ package com.festival.app.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.sql.Date;
@@ -30,15 +32,17 @@ public class Festival {
 
     private String location;
 
-
     private Date date;
 
     private String time;
 
     private double price;
 
+    @Enumerated(EnumType.STRING)
+    private Attendance attendance;
+
     @Column(name = "min_age")
-    @Size(min = 16, max = 99)
+    @Min(16) @Max(99)
     private Integer minimumAge;
 
 
