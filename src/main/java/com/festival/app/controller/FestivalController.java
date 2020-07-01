@@ -1,9 +1,7 @@
 package com.festival.app.controller;
 
 import com.festival.app.model.Attendance;
-import com.festival.app.model.Festival;
-import com.festival.app.model.Area;
-import com.festival.app.repository.FestivalRepository;
+import com.festival.app.model.Event;
 import com.festival.app.service.FestivalService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ public class FestivalController {
 
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<Festival>> getAll(){
+    public ResponseEntity<List<Event>> getAll(){
         var festivals = service.getAll();
 
         if(festivals.size() > 0){
@@ -37,23 +35,24 @@ public class FestivalController {
     }
 
     @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> add(@RequestBody Festival festival){
+    public ResponseEntity<?> add(@RequestBody Event event){
 
         try {
-            Festival f = service.addEvent(festival);
-            return new ResponseEntity<>(festival, HttpStatus.OK);
+            Event f = service.addEvent(event);
+            return new ResponseEntity<>(event, HttpStatus.OK);
         }
         catch (IllegalArgumentException ex) {
             return new ResponseEntity<>("Festival cannot be null", HttpStatus.BAD_REQUEST);
         }
     }
 
+    // Todo: change to /all/user/{id} also in frontend.
     @GetMapping(path = "/all/{id}")
     public ResponseEntity<?> getAllByUserId(@PathVariable Long id){
 
-        List<Festival> festivals = service.findByUserId(id);
-        if(festivals.size() != 0) {
-            return new ResponseEntity<>(festivals, HttpStatus.OK);
+        List<Event> events = service.findByUserId(id);
+        if(events.size() != 0) {
+            return new ResponseEntity<>(events, HttpStatus.OK);
         }
 
         return new ResponseEntity<>("No festivals found for user with id: " + id, HttpStatus.OK);
@@ -61,9 +60,9 @@ public class FestivalController {
 
     @PutMapping(value = "/update")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> update(@RequestBody Festival festival){
+    public ResponseEntity<?> update(@RequestBody Event event){
         try {
-            Festival f = service.save(festival);
+            Event f = service.save(event);
             return new ResponseEntity<>(f, HttpStatus.OK);
         }
         catch (IllegalArgumentException ex) {
@@ -84,9 +83,9 @@ public class FestivalController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Festival> getById(@PathVariable Long id) {
+    public ResponseEntity<Event> getById(@PathVariable Long id) {
 
-        Optional<Festival> f = service.getById(id);
+        Optional<Event> f = service.getById(id);
         if(f.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -94,15 +93,15 @@ public class FestivalController {
     }
 
     @GetMapping(value = "/info/all/{id}")
-    public ResponseEntity<Festival> getAllInfoById(@PathVariable Long id) {
+    public ResponseEntity<Event> getAllInfoById(@PathVariable Long id) {
 
         return new ResponseEntity<>(service.getAllInfoById(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}/attendance")
-    public ResponseEntity<Festival> setAttendance(@PathVariable Long id, @RequestBody JSONObject attendance)
+    public ResponseEntity<Event> setAttendance(@PathVariable Long id, @RequestBody JSONObject attendance)
     {
-        Festival f = service.setAttendance(id, Attendance.valueOf(attendance.getAsString("attendance")));
-        return new ResponseEntity<Festival>(f, HttpStatus.OK);
+        Event f = service.setAttendance(id, Attendance.valueOf(attendance.getAsString("attendance")));
+        return new ResponseEntity<Event>(f, HttpStatus.OK);
     }
 }

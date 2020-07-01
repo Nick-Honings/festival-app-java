@@ -1,8 +1,9 @@
 package com.festival.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class ApplicationUser {
+public class ApplicationUser extends RepresentationModel<ApplicationUser> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,17 +31,14 @@ public class ApplicationUser {
     @Email(message = "Email should be valid")
     private String email;
 
-
-    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Festival> festivals = new ArrayList<Festival>();
+    @JsonIgnore
+    private List<Event> events = new ArrayList<Event>();
 
-    public void addFestival(Festival festival) {
-        this.festivals.add(festival);
-        festival.setUser(this);
+    public void addFestival(Event event) {
+        this.events.add(event);
+        event.setUser(this);
     }
-
-
 
     public String getEmail() {
         return email;

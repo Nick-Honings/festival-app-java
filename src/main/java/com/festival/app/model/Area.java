@@ -1,23 +1,20 @@
 package com.festival.app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "area")
 @Data
 @NoArgsConstructor
-public class Area {
+public class Area extends RepresentationModel<Area> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,7 +33,7 @@ public class Area {
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "festival_id")
-    private Festival festival;
+    private Event event;
 
 
     public void addArtist(Artist artist){
@@ -49,7 +46,7 @@ public class Area {
     }
 
 
-    public void setFestival(Festival festival) {
-        this.festival = festival;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }

@@ -1,6 +1,6 @@
 package com.festival.app.unit;
 
-import com.festival.app.model.Festival;
+import com.festival.app.model.Event;
 import com.festival.app.repository.FestivalRepository;
 import com.festival.app.service.FestivalService;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class FestivalServiceTest {
+public class EventServiceTest {
 
     @Mock
     private FestivalRepository festivalRepository;
@@ -27,14 +27,14 @@ public class FestivalServiceTest {
     @InjectMocks
     private FestivalService festivalService;
 
-    static List<Festival> festivals;
+    static List<Event> events;
 
     @BeforeAll
     static void init(){
-        festivals = new ArrayList<Festival>();
-        Festival f1 = new Festival();
-        Festival f2 = new Festival();
-        Festival f3 = new Festival();
+        events = new ArrayList<Event>();
+        Event f1 = new Event();
+        Event f2 = new Event();
+        Event f3 = new Event();
 
         f1.setName("Defqon");
         f1.setDate(new Date(2020-5-6));
@@ -42,18 +42,18 @@ public class FestivalServiceTest {
         f2.setDate(new Date(2020-6-4));
         f3.setName("Lowlands");
         f3.setDate(new Date(2020-4-6));
-        festivals.add(f1);
-        festivals.add(f2);
-        festivals.add(f3);
+        events.add(f1);
+        events.add(f2);
+        events.add(f3);
     }
 
     @Test
     void getAllFestivals(){
         // Arrange
-        when(festivalRepository.findAll()).thenReturn(festivals);
+        when(festivalRepository.findAll()).thenReturn(events);
 
         // Act
-        List<Festival> result = festivalService.getAll();
+        List<Event> result = festivalService.getAll();
 
         // Assert
         assertEquals(3, result.size());
@@ -63,22 +63,22 @@ public class FestivalServiceTest {
     @Test
     void addFestival_ShouldWork() {
         // Arrange
-        Festival expected = new Festival();
+        Event expected = new Event();
         expected.setName("Defqon");
-        when(festivalRepository.save(any(Festival.class))).thenReturn(expected);
+        when(festivalRepository.save(any(Event.class))).thenReturn(expected);
 
         // Act
-        Festival result = festivalService.addEvent(expected);
+        Event result = festivalService.addEvent(expected);
 
         // Assert
         assertEquals(expected, result);
-        verify(festivalRepository, times(1)).save(any(Festival.class));
+        verify(festivalRepository, times(1)).save(any(Event.class));
     }
 
     @Test
     void removeFestival_ShouldWork(){
         // Arrange
-        Festival expected = festivals.get(0);
+        Event expected = events.get(0);
         ReflectionTestUtils.setField(expected, "id", (long)1);
         var x = expected.getId();
 

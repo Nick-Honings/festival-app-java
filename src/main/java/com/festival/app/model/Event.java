@@ -4,23 +4,20 @@ package com.festival.app.model;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.hateoas.RepresentationModel;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Festival {
+public class Event extends RepresentationModel<Event> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,7 +48,7 @@ public class Festival {
 
     public void addArea(Area area){
         this.areas.add(area);
-        area.setFestival(this);
+        area.setEvent(this);
     }
 
     @JsonIgnore

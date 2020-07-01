@@ -29,16 +29,16 @@ public class FestivalService {
         this.userDetailsService = userDetailsService;
     }
 
-    public Festival addEvent(Festival festival)
+    public Event addEvent(Event event)
     {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ApplicationUser user = userDetailsService.findByUserName(username);
-        festival.setUser(user);
+        event.setUser(user);
 
-        List<Area> areas = new ArrayList<Area>(festival.getAreas());
+        List<Area> areas = new ArrayList<Area>(event.getAreas());
 
         for (Area area : areas) {
-            festival.addArea(area);
+            event.addArea(area);
 
 
             List<Artist> artists = new ArrayList<Artist>(area.getArtists());
@@ -50,34 +50,34 @@ public class FestivalService {
             areaRepo.save(area);
         }
         
-        Festival newFestival = festivalRepo.save(festival);
+        Event newEvent = festivalRepo.save(event);
         //System.out.println(newFestival);
-        return newFestival;
+        return newEvent;
     }
 
-    public List<Festival> getAll(){
+    public List<Event> getAll(){
         return festivalRepo.findAll();
     }
 
-    public List<Festival> findByUserId(Long id){
+    public List<Event> findByUserId(Long id){
         return festivalRepo.findByUserId(id);
     }
 
-    public Festival save(Festival festival){
-        return festivalRepo.save(festival);
+    public Event save(Event event){
+        return festivalRepo.save(event);
     }
 
     public void deleteById(Long id){
         festivalRepo.deleteById(id);
     }
 
-    public Optional<Festival> getById(Long id){
+    public Optional<Event> getById(Long id){
         return festivalRepo.findById(id);
     }
 
-    public Festival getAllInfoById(Long id){ return festivalRepo.getAllInfo(id);}
+    public Event getAllInfoById(Long id){ return festivalRepo.getAllInfo(id);}
 
-    public Festival setAttendance(Long id, Attendance attendance) {
+    public Event setAttendance(Long id, Attendance attendance) {
         return festivalRepo.setAttendance(id, attendance);
     }
 }
